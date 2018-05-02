@@ -9,11 +9,19 @@ class IncrementButton extends React.Component {
   };
   
   render() {
-    return (
-      <button onClick={this.handleClick}>
-        +{this.props.incrementValue}
-      </button>
-    );
+    if(this.props.incrementValue > 0) {
+      return (
+        <button onClick={this.handleClick}>
+          +{this.props.incrementValue}
+        </button>
+      );
+    } else { // Received negative integer as input
+      return (
+        <button onClick={this.handleClick}>
+          {this.props.incrementValue}
+        </button>
+      );
+    }
   }
 }
 
@@ -50,9 +58,33 @@ const DropsAndTops = (props) => {
   );
 };
 
+class DropdownManager extends React.Component {
+  // Describes the initial state
+  state = {
+    orderedList: false
+  };
+
+  // Handles re-ordering of list items when event is triggered
+  toggleListResults = () =>{
+    this.setState(() => ({
+      orderedList: true
+    }));
+  }
+
+  render() {
+    return (
+      <div>
+        <TextForm />
+        <DropsAndTops />
+      </div>
+    );
+  }
+}
+
 class ToggleButton extends React.Component {
 	onRadioClick = () => {
-  	console.log('Event: ');
+    console.log('Event: ');
+    // Event handling to be completed
   };
 
   render() {
@@ -80,6 +112,17 @@ const SweetList = (props) => {
   );
 };
 
+class ListManager extends React.Component {
+  render() {
+    return (
+      <div>
+        <ToggleButton />
+        <SweetList />
+      </div>
+    );
+  }
+}
+
 class App extends React.Component {
 	state = {counter: 0 };
 
@@ -104,9 +147,14 @@ class App extends React.Component {
         	incrementValue={10}
       		onClickFunction={this.incrementCounter}
         />
+        <IncrementButton
+        	incrementValue={-1}
+      		onClickFunction={this.incrementCounter}
+        />
       	<ButtonResult counter={this.state.counter} />
         <TextForm />
         <DropsAndTops />
+        {/* <DropdownManager /> */}
         <ToggleButton
         	radioClick={this.toggleButton}
         	reverseResults={this.toggleResults}
@@ -115,6 +163,7 @@ class App extends React.Component {
         	numOne={1}
           numTwo={2}
         />
+        {/* <ListManager /> */}
       </div>
     );
   }
